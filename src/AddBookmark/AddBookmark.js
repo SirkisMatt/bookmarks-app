@@ -1,6 +1,7 @@
 import React, { Component } from  'react';
 import { withRouter } from 'react-router-dom';
 import BookmarksContext from '../BookmarksContext';
+import PropTypes from 'prop-types';
 import config from '../config'
 import './AddBookmark.css';
 
@@ -139,5 +140,38 @@ class AddBookmark extends Component {
     );
   }
 }
+AddBookmark.propTypes = {
+  title: PropTypes.string.isRequired,
+  url: (props, propName, componentName) => {
+    // get the value of the prop
+    const prop = props[propName];
+
+    // do the isRequired check
+    if(!prop) {
+      return new Error(`${propName} is required in ${componentName}. Validation Failed`);
+    }
+
+    // check the type
+    if (typeof prop != 'string') {
+      return new Error(`Invalid prop, ${propName} is expected to be a string in ${componentName}. ${typeof prop} found.`);
+    }
+
+    // do the custom check here
+    // using a simple regex
+    if (prop.length < 5 || !prop.match(new RegExp(/^https?:\/\//))) {
+      return new Error(`Invalid prop, ${propName} must be min length 5 and begin http(s)://. Validation Failed.`);
+    }
+  },
+  rating: PropTypes.number,
+  description: PropTypes.string
+};
+
+AddBookmark.defaultProps = {
+  title: "",
+  url: "",
+  rating: 1,
+  description: ""
+};
+
 
 export default withRouter(AddBookmark);
