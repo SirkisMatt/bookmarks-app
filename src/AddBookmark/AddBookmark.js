@@ -1,5 +1,4 @@
 import React, { Component } from  'react';
-import { withRouter } from 'react-router-dom';
 import BookmarksContext from '../BookmarksContext';
 import PropTypes from 'prop-types';
 import config from '../config'
@@ -10,11 +9,14 @@ const Required = () => (
 )
 
 class AddBookmark extends Component {
-  static contextType = BookmarksContext;
-
-  state = {
+  
+constructor() {
+  super()
+  this.state = {
     error: null,
   };
+}
+  static contextType = BookmarksContext;
 
   handleSubmit = e => {
     e.preventDefault()
@@ -174,4 +176,4 @@ AddBookmark.defaultProps = {
 };
 
 
-export default withRouter(AddBookmark);
+export default AddBookmark;
