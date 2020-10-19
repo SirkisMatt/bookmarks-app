@@ -1,6 +1,5 @@
 import React, { Component } from  'react';
 import BookmarksContext from '../BookmarksContext';
-import PropTypes from 'prop-types';
 import config from '../config'
 import './AddBookmark.css';
 
@@ -21,12 +20,12 @@ constructor() {
   handleSubmit = e => {
     e.preventDefault()
     // get the form fields from the event
-    const { title, url, description, rating } = e.target
+    const { title, url_path, descr, rating } = e.target
     const bookmark = {
       title: title.value,
-      url: url.value,
-      description: description.value,
-      rating: rating.value,
+      url_path: url_path.value,
+      descr: descr.value,
+      rating: Number(rating.value),
     }
     this.setState({ error: null })
     fetch(config.API_ENDPOINT, {
@@ -49,8 +48,8 @@ constructor() {
       })
       .then(data => {
         title.value = ''
-        url.value = ''
-        description.value = ''
+        url_path.value = ''
+        descr.value = ''
         rating.value = ''
         this.props.history.push('/')
         this.context.addBookmark(data)
@@ -90,26 +89,26 @@ constructor() {
             />
           </div>
           <div>
-            <label htmlFor='url'>
-              URL
+            <label htmlFor='url_path'>
+              url_path
               {' '}
               <Required />
             </label>
             <input
-              type='url'
-              name='url'
-              id='url'
+              type='url_path'
+              name='url_path'
+              id='url_path'
               placeholder='https://www.great-website.com/'
               required
             />
           </div>
           <div>
-            <label htmlFor='description'>
-              Description
+            <label htmlFor='descr'>
+              description
             </label>
             <textarea
-              name='description'
-              id='description'
+              name='descr'
+              id='descr'
             />
           </div>
           <div>
@@ -142,37 +141,13 @@ constructor() {
     );
   }
 }
-AddBookmark.propTypes = {
-  title: PropTypes.string.isRequired,
-  url: (props, propName, componentName) => {
-    // get the value of the prop
-    const prop = props[propName];
 
-    // do the isRequired check
-    if(!prop) {
-      return new Error(`${propName} is required in ${componentName}. Validation Failed`);
-    }
-
-    // check the type
-    if (typeof prop != 'string') {
-      return new Error(`Invalid prop, ${propName} is expected to be a string in ${componentName}. ${typeof prop} found.`);
-    }
-
-    // do the custom check here
-    // using a simple regex
-    if (prop.length < 5 || !prop.match(new RegExp(/^https?:\/\//))) {
-      return new Error(`Invalid prop, ${propName} must be min length 5 and begin http(s)://. Validation Failed.`);
-    }
-  },
-  rating: PropTypes.number,
-  description: PropTypes.string
-};
 
 AddBookmark.defaultProps = {
   title: "",
-  url: "",
+  url_path: "",
   rating: 1,
-  description: ""
+  descr: ""
 };
 
 
