@@ -30,8 +30,6 @@ export default class EditBookmarkForm extends Component {
     }
     componentDidMount() {
         const { bookmarkId } = this.props.match.params
-        console.log(bookmarkId)
-        console.log(this.props.match.params)
         fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
             method: 'GET',
             headers: {
