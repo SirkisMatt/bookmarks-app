@@ -9,6 +9,15 @@ const Required = () => (
 )
 
 export default class EditBookmarkForm extends Component {
+    static defaultProps = {
+        match: {
+            params: {
+                bookmarkId: null
+            }
+        },
+        history: {},
+      };
+
     static propTypes = {
         match: PropTypes.shape({
             params: PropTypes.object,
@@ -30,6 +39,7 @@ export default class EditBookmarkForm extends Component {
     }
     componentDidMount() {
         const { bookmarkId } = this.props.match.params
+        console.log(this.props)
         fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
             method: 'GET',
             headers: {
